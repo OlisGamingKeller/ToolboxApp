@@ -1,15 +1,27 @@
-using System;
-using System.Buffers;
-using System.Linq.Expressions;
-
 namespace ToolboxApp.Calculator;
 
+/*
+CalculatorTool ist ein Toolbox-Tool mit eigenem Untermenü
+Design: Rechenoperationen werden als Liste von Operation-Objekten gespeichert.
+        Jede Operation enthält Name + Berechnunglogik (Delegate) + eigene Validierung (TryExecute),
+        sodass Run() keine switch/if-Kaskaden braucht und leicht erweiterbar bleibt.
+*/
 public class CalculatorTool : ITool
 {
-    public string Name => "Taschenrechner (WiP)";
+    public string Name => "Taschenrechner";
 
+    /*
+    Enthält alle verfügbaren Rechenoperationen
+    readonly: die Liste wird im Konstruktor einmal aufgebaut und danach nur noch gelesen
+    Neue Operationen lassen sich hinzufügen, ohne Run() anfassen zu müssen
+    */
     private readonly List<Operation> _operations;
 
+    /*
+    Initialisiert die Operationen.
+    Jede Operation liefert ein Tuple zurück: (success, result, error).
+    Bei Fehlern (z.B. Division durch 0) wird success=false und eine Fehlermeldung gesetzt.
+    */
     public CalculatorTool()
     {
         _operations = new List<Operation>
@@ -28,12 +40,9 @@ public class CalculatorTool : ITool
 
     public void Run()
     {
-        /*Console.WriteLine("Achtung Baustelle");
-        Console.WriteLine("Hier entsteht ein Taschenrechner");
-        Console.ReadLine();
-        */
         while (true)
         {
+            // 1) Menü anzeigen (dynamisch aus _operations generiert)
             Console.Clear();
             Console.WriteLine("=== Rechner ===");
 
@@ -45,6 +54,7 @@ public class CalculatorTool : ITool
             Console.WriteLine("0) Zurück");
             Console.Write("Auswahl: ");
 
+            // 2) Menüauswahl einlesen + validieren
             string? input = Console.ReadLine();
 
             if (!int.TryParse(input, out int choice))
@@ -55,6 +65,7 @@ public class CalculatorTool : ITool
             }
             if (choice == 0) return;
 
+            // 3) Ausgewählte Operation bestimmen (Menünummer -> Listenindex)
             int index =  choice -1;
 
             if (index < 0 || index >= _operations.Count)
@@ -68,14 +79,17 @@ public class CalculatorTool : ITool
             
             var operation = _operations[index];
 
+            // 4) Zwei Zahlen einlesen (Komma/Punkt erlaubt)
             double a = ReadDouble("Zahl 1: ");
             double b = ReadDouble("Zahl 2: ");
 
+            // 5) Operation ausführen (Operation entscheidet selbst über Validität)
             var (success, result, error) = operation.TryExecute(a,b);
 
+            // 6) Ausgabe (Ergebnis formatiert, Fehlertext falls nicht erfolgreich)
             if (success)
             {
-                Console.WriteLine($"Ergebnis: {result}");
+                Console.WriteLine($"Ergebnis: {FormatResult(result)}");
             }
             else
             {
@@ -88,6 +102,11 @@ public class CalculatorTool : ITool
         }
     }
 
+    /*
+    Liest eine Zahl als double ein.
+    Akzeptiert sowohl "1,7" als auch "1.7" durch Normalisierung auf '.' und InvariantCulture.
+    Schleife läuft so lange bis eine gültige zahl einegegeben wurde.
+    */
     private double ReadDouble(string prompt)
     {
         while (true)
@@ -108,10 +127,27 @@ public class CalculatorTool : ITool
 
     }
 
+    /*
+    Formatiert das Ergebnis für die Anzeige wie bei einem Taschenrechner:
+    intern double-Präzision, aber für die ANzeige auf 10 Stellen gerundet,
+    ohne unnötige Nachkommastellen (##########).
+    */
+    private string FormatResult(double value)
+    {
+        double rounded = Math.Round(value, 10);
+        return rounded.ToString("0.##########");
+    }
+
+    /*
+    Hilfsklasse (nur für CalculatorTool):
+    Kapselt Name + Implementierung der Berechnung.
+    _impl ist ein Delegate, sodass jede Operation ihre Logik + Validierung selbst mitbringt.
+    TryExecute gibt ein Tuple zurück: success/result/error (ähnlich wie TryParse)
+    */
     private class Operation
     {
         public string Name { get; }
-        public Func<double, double, (bool success, double result, string? error)> _impl;
+        private readonly Func<double, double, (bool success, double result, string? error)> _impl;
 
         public Operation(string name, Func<double, double, (bool, double, string?)> impl)
         {

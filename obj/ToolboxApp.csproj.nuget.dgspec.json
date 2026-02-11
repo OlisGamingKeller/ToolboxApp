@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\Dev\\ToolboxApp\\ToolboxApp.csproj",
         "projectName": "ToolboxApp",
         "projectPath": "C:\\Dev\\ToolboxApp\\ToolboxApp.csproj",
-        "packagesPath": "C:\\Users\\OliverLinke\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\linke\\.nuget\\packages\\",
         "outputPath": "C:\\Dev\\ToolboxApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\OliverLinke\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\linke\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"

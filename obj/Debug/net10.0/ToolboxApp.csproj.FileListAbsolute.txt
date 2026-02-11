@@ -26,3 +26,4 @@ C:\Dev\ToolboxApp\obj\Debug\net10.0\refint\ToolboxApp.dll
 C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.pdb
 C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.genruntimeconfig.cache
 C:\Dev\ToolboxApp\obj\Debug\net10.0\ref\ToolboxApp.dll
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.sourcelink.json
