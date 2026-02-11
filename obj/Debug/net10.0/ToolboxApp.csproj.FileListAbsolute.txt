@@ -1,0 +1,28 @@
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\bin\Debug\net10.0\ToolboxApp.exe
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\bin\Debug\net10.0\ToolboxApp.deps.json
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\bin\Debug\net10.0\ToolboxApp.runtimeconfig.json
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\bin\Debug\net10.0\ToolboxApp.dll
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\bin\Debug\net10.0\ToolboxApp.pdb
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.AssemblyInfoInputs.cache
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.AssemblyInfo.cs
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.csproj.CoreCompileInputs.cache
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.dll
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\refint\ToolboxApp.dll
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.pdb
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ToolboxApp.genruntimeconfig.cache
+C:\Users\OliverLinke\OneDrive - future - Training & Consulting GmbH\Dokumente\ToolboxApp\obj\Debug\net10.0\ref\ToolboxApp.dll
+C:\Dev\ToolboxApp\bin\Debug\net10.0\ToolboxApp.exe
+C:\Dev\ToolboxApp\bin\Debug\net10.0\ToolboxApp.deps.json
+C:\Dev\ToolboxApp\bin\Debug\net10.0\ToolboxApp.runtimeconfig.json
+C:\Dev\ToolboxApp\bin\Debug\net10.0\ToolboxApp.dll
+C:\Dev\ToolboxApp\bin\Debug\net10.0\ToolboxApp.pdb
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.AssemblyInfoInputs.cache
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.AssemblyInfo.cs
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.csproj.CoreCompileInputs.cache
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.dll
+C:\Dev\ToolboxApp\obj\Debug\net10.0\refint\ToolboxApp.dll
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.pdb
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ToolboxApp.genruntimeconfig.cache
+C:\Dev\ToolboxApp\obj\Debug\net10.0\ref\ToolboxApp.dll
