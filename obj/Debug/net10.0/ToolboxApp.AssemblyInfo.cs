@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ToolboxApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1dbe5882f813196c0f0e5532ea4404993329a7e1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+049152e42a56474c9442b4bd53bac2dc5a7e2755")]
 [assembly: System.Reflection.AssemblyProductAttribute("ToolboxApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ToolboxApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -14,6 +14,28 @@ public class LeetTool : ITool
 
     private readonly Dictionary<char,char> _plainToLeet;
     private readonly Dictionary<char,char> _leetToPlain;
+
+    public LeetTool()
+    {
+        _plainToLeet = new Dictionary<char,char>
+        {
+            {'A','4'},
+            {'E','3'},
+            {'I','1'},
+            {'O','0'},
+            {'S','5'},
+            {'T','7'}
+        };
+        _leetToPlain = new Dictionary<char, char>
+        {
+            { '4', 'A' },
+            { '3', 'E' },
+            { '1', 'I' },
+            { '0', 'O' },
+            { '5', 'S' },
+            { '7', 'T' }
+        };
+    }
     public void Run()
     {
         Console.WriteLine("Achtung Baustelle");
