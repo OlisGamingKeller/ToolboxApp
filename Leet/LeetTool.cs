@@ -50,7 +50,7 @@ public class LeetTool : ITool
     {
         foreach (char c in input)
         {
-            if(_leetToPlain.ContainsKey(c))         //ContainsKey(c) prüft ob Zeichen in Dictionary
+            if (_leetToPlain.ContainsKey(c))         //ContainsKey(c) prüft ob Zeichen in Dictionary
             {
                 return true;
             }
@@ -64,7 +64,7 @@ public class LeetTool : ITool
         StringBuilder builder = new StringBuilder();
         foreach (char c in input)
         {
-            if(dictionary.TryGetValue(c, out char translatedChar))      //Prüft, ob Zeichen als Leet-Key vorkommt
+            if (dictionary.TryGetValue(c, out char translatedChar))      //Prüft, ob Zeichen als Leet-Key vorkommt
             {
                 builder.Append(translatedChar);                         //Übersetzten Wert anhängen
             }
@@ -76,10 +76,118 @@ public class LeetTool : ITool
         return builder.ToString();
     }
 
+    // Einlesen aus Konsoleneingabe
+    
+
+    // Einlesen aus Datei
+
+
+    // Text verarbeiten
     public void Run()
     {
-        Console.WriteLine("Achtung Baustelle");
-        Console.WriteLine("Hier entsteht ein LEET-Speech-Übersetzer");
-        Console.ReadLine();
+        while(true)
+        {
+            // Menü anzeigen
+            Console.Clear();
+            Console.WriteLine("Achtung Baustelle");
+            Console.WriteLine("=== Leet-Übersetzer ===");
+            Console.WriteLine("1) Text eingeben und übersetzen");
+            Console.WriteLine("2) Text aus Datei einlesen und übersetzen");
+            Console.WriteLine("0) Zurück");
+            Console.Write("Auswahl: ");
+
+            // Menüauswahl einlesen + validieren
+            string? input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int choice))
+            {
+                Console.WriteLine("Bitte eine Menünummer eingeben. Enter...");
+                Console.ReadLine();
+                continue;
+            }
+            if (choice < 0 || choice > 2)
+            {
+                Console.WriteLine("Ungültige Auswahl. Enter...");
+                Console.ReadLine();
+                continue;
+            }
+            if (choice == 0) return;
+            if (choice == 1)
+            {
+                Console.Clear();
+                Console.WriteLine("Geben Sie einen zu übersetzenden Text ein");
+                string? textInput = Console.ReadLine();
+                if(string.IsNullOrWhiteSpace(textInput))
+                {
+                    Console.WriteLine("Bitte einen Text eingeben. Enter...");
+                    Console.ReadLine();
+                    continue;
+                }
+                Console.Clear();
+                //Noramalisieren
+                string normalizedInput = NormalizeInput(textInput);
+                //Erkennen
+                bool isLeet = IsLikelyLeet(normalizedInput);
+                if (isLeet)
+                {
+                    Console.WriteLine("Der Text wurde als Leet-Text erkannt");
+                }
+                else
+                {
+                    Console.WriteLine("Der Text wurde als Plain-Text erkannt");
+                }
+                //User-Abfrage zur Absischerung & Dictionary festlegen
+                Console.WriteLine("Ist das korrekt?");
+                Console.WriteLine("1) Ja, stimmt. Bitte übersetzen.");
+                Console.WriteLine("2) Nein, bitte umkehren und übersetzen.");
+                Console.WriteLine("3) Ich bin mir nicht sicher. Übersetze mit dem ermittelten Ergebnis.");
+                Console.WriteLine("0) Ich möchte den Text neu eingeben. Zurück.");
+                Console.Write("Auswahl: ");
+
+                string? inputTextcheck = Console.ReadLine();
+                if (!int.TryParse(inputTextcheck, out int choiceText))
+                {
+                    Console.WriteLine("Bitte eine Menünummer eingeben. Enter...");
+                    Console.ReadLine();
+                    continue;
+                }
+                if (choiceText < 0 || choiceText > 3)
+                {
+                    Console.WriteLine("Ungültige Auswahl. Enter...");
+                    Console.ReadLine();
+                    continue;
+                }
+                if (choiceText == 0) continue;
+
+                bool useLeetToPlain = isLeet;
+                if (choiceText == 2)
+                {
+                    useLeetToPlain = !isLeet;
+                }
+                Console.Clear();
+                //Übersetzen
+                string result;
+                if (useLeetToPlain)
+                {
+                    result = Translate(normalizedInput, _leetToPlain);
+                }
+                else
+                {
+                    result = Translate(normalizedInput, _plainToLeet);
+                }
+                Console.WriteLine(result);
+                Console.ReadLine();
+
+                
+            }
+            else if (choice == 2)
+            {
+                Console.WriteLine("WiP");
+                Console.WriteLine("Funktion wird später hinzugefügt.");
+                Console.WriteLine("Enter...");
+                Console.ReadLine();
+            }
+
+        }
     }
 }
