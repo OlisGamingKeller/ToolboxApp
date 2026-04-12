@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace ToolboxApp.Leet;
 
@@ -15,6 +16,7 @@ public class LeetTool : ITool
     private readonly Dictionary<char,char> _plainToLeet;
     private readonly Dictionary<char,char> _leetToPlain;
 
+    // Konstruktor
     public LeetTool()
     {
         _plainToLeet = new Dictionary<char,char>
@@ -36,6 +38,44 @@ public class LeetTool : ITool
             { '7', 'T' }
         };
     }
+
+    // Normalisieren
+    private string NormalizeInput(string input)
+    {
+        return input.ToUpper();
+    }
+
+    // Erkennen
+    private bool IsLikelyLeet(string input)
+    {
+        foreach (char c in input)
+        {
+            if(_leetToPlain.ContainsKey(c))         //ContainsKey(c) prüft ob Zeichen in Dictionary
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Übersetzen
+    private string Translate(string input, Dictionary<char, char> dictionary)
+    {
+        StringBuilder builder = new StringBuilder();
+        foreach (char c in input)
+        {
+            if(dictionary.TryGetValue(c, out char translatedChar))      //Prüft, ob Zeichen als Leet-Key vorkommt
+            {
+                builder.Append(translatedChar);                         //Übersetzten Wert anhängen
+            }
+            else
+            {
+                builder.Append(c);                                      //Originalzeichen anhängen
+            }
+        }
+        return builder.ToString();
+    }
+
     public void Run()
     {
         Console.WriteLine("Achtung Baustelle");
