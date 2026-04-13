@@ -95,7 +95,7 @@ public class LeetTool : ITool
     private string? ReadTextFromFile()
     {
         Console.Clear();
-        Console.WriteLine("Geben Sie den Dateipfad ein:");
+        Console.WriteLine("Geben Sie den Dateipfad ein:");                                      //Dateipfad eingeben
         string? pathInput = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(pathInput))
         {
@@ -103,20 +103,31 @@ public class LeetTool : ITool
             Console.ReadLine();
             return null;
         }
-        if (!File.Exists(pathInput))
+        if (!File.Exists(pathInput))                                                            //Existiert die Datei
         {
             Console.WriteLine("Die Datei existiert nicht oder der Pfad ist falsch. Enter...");
             Console.ReadLine();
             return null;
         }
-        string? textInput = File.ReadAllText(pathInput);
-        if (string.IsNullOrWhiteSpace(textInput))
+        // Kein Text in Datei & kann Datei überhaupt gelesen werden
+        try
         {
-            Console.WriteLine("Die Datei enthält keinen verwertbaren Text. Enter...");
+            string? textInput = File.ReadAllText(pathInput);
+            if (string.IsNullOrWhiteSpace(textInput))
+            {
+                Console.WriteLine("Die Datei enthält keinen verwertbaren Text. Enter...");
+                Console.ReadLine();
+                return null;
+            }
+            return textInput;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Datei konnte nicht gelesen werden. Enter...");
+            Console.WriteLine(ex.Message);
             Console.ReadLine();
             return null;
         }
-        return textInput;
     }
 
     // Text verarbeiten
