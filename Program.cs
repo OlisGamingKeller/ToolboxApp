@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using ToolboxApp;
 using ToolboxApp.Calculator;
 using ToolboxApp.Game;
@@ -8,6 +9,8 @@ using ToolboxApp.Leet;
 using ToolboxApp.PasswordGenerator;
 using ToolboxApp.PasswordManager;
 
+Console.OutputEncoding = Encoding.UTF8;
+Console.InputEncoding = Encoding.UTF8;
 
 var tools = new List<ITool>
 {

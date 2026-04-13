@@ -77,12 +77,110 @@ public class LeetTool : ITool
     }
 
     // Einlesen aus Konsoleneingabe
-    
+    private string? ReadTextFromConsole()
+    {
+        Console.Clear();
+        Console.WriteLine("Geben Sie einen zu übersetzenden Text ein");
+        string? textInput = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(textInput))
+        {
+            Console.WriteLine("Bitte einen Text eingeben. Enter...");
+            Console.ReadLine();
+            return null;
+        }
+        return textInput;
+    }
 
     // Einlesen aus Datei
-
+    private string? ReadTextFromFile()
+    {
+        Console.Clear();
+        Console.WriteLine("Geben Sie den Dateipfad ein:");
+        string? pathInput = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(pathInput))
+        {
+            Console.WriteLine("Bitte einen gültigen Pfad eingeben. Enter...");
+            Console.ReadLine();
+            return null;
+        }
+        if (!File.Exists(pathInput))
+        {
+            Console.WriteLine("Die Datei existiert nicht oder der Pfad ist falsch. Enter...");
+            Console.ReadLine();
+            return null;
+        }
+        string? textInput = File.ReadAllText(pathInput);
+        if (string.IsNullOrWhiteSpace(textInput))
+        {
+            Console.WriteLine("Die Datei enthält keinen verwertbaren Text. Enter...");
+            Console.ReadLine();
+            return null;
+        }
+        return textInput;
+    }
 
     // Text verarbeiten
+    private void ProcessText(string textInput)
+    {
+        Console.Clear();
+
+        //Normalisieren
+        string normalizedInput = NormalizeInput(textInput);
+        //Erkennen
+        bool isLeet = IsLikelyLeet(normalizedInput);
+        if (isLeet)
+        {
+            Console.WriteLine("Der Text wurde als Leet-Text erkannt");
+        }
+        else
+        {
+            Console.WriteLine("Der Text wurde als Plain-Text erkannt");
+        }
+        //User-Abfrage zur Absischerung & Dictionary festlegen
+        Console.WriteLine("Ist das korrekt?");
+        Console.WriteLine("1) Ja, stimmt. Bitte übersetzen.");
+        Console.WriteLine("2) Nein, bitte umkehren und übersetzen.");
+        Console.WriteLine("3) Ich bin mir nicht sicher. Übersetze mit dem ermittelten Ergebnis.");
+        Console.WriteLine("0) Ich möchte den Text neu eingeben. Zurück.");
+        Console.Write("Auswahl: ");
+
+        string? inputTextcheck = Console.ReadLine();
+        if (!int.TryParse(inputTextcheck, out int choiceText))
+        {
+            Console.WriteLine("Bitte eine Menünummer eingeben. Enter...");
+            Console.ReadLine();
+            return;
+        }
+        if (choiceText < 0 || choiceText > 3)
+        {
+            Console.WriteLine("Ungültige Auswahl. Enter...");
+            Console.ReadLine();
+            return;
+        }
+        if (choiceText == 0) return;
+
+        bool useLeetToPlain = isLeet;
+        if (choiceText == 2)
+        {
+            useLeetToPlain = !isLeet;
+        }
+        Console.Clear();
+        //Übersetzen
+        string result;
+        if (useLeetToPlain)
+        {
+            result = Translate(normalizedInput, _leetToPlain);
+        }
+        else
+        {
+            result = Translate(normalizedInput, _plainToLeet);
+        }
+        Console.WriteLine($"Eingabe erkannt als: {(isLeet ? "Leet-Text" : "Plain-Text")}");
+        Console.WriteLine($"Übersetzungsrichtung: {(useLeetToPlain ? "Leet -> Plain" : "Plain -> Leet")}");
+        Console.WriteLine($"Ergebnis: \n{result}");
+        Console.ReadLine();
+    }
+
     public void Run()
     {
         while(true)
@@ -114,80 +212,16 @@ public class LeetTool : ITool
             if (choice == 0) return;
             if (choice == 1)
             {
-                Console.Clear();
-                Console.WriteLine("Geben Sie einen zu übersetzenden Text ein");
-                string? textInput = Console.ReadLine();
-                if(string.IsNullOrWhiteSpace(textInput))
-                {
-                    Console.WriteLine("Bitte einen Text eingeben. Enter...");
-                    Console.ReadLine();
-                    continue;
-                }
-                Console.Clear();
-                //Noramalisieren
-                string normalizedInput = NormalizeInput(textInput);
-                //Erkennen
-                bool isLeet = IsLikelyLeet(normalizedInput);
-                if (isLeet)
-                {
-                    Console.WriteLine("Der Text wurde als Leet-Text erkannt");
-                }
-                else
-                {
-                    Console.WriteLine("Der Text wurde als Plain-Text erkannt");
-                }
-                //User-Abfrage zur Absischerung & Dictionary festlegen
-                Console.WriteLine("Ist das korrekt?");
-                Console.WriteLine("1) Ja, stimmt. Bitte übersetzen.");
-                Console.WriteLine("2) Nein, bitte umkehren und übersetzen.");
-                Console.WriteLine("3) Ich bin mir nicht sicher. Übersetze mit dem ermittelten Ergebnis.");
-                Console.WriteLine("0) Ich möchte den Text neu eingeben. Zurück.");
-                Console.Write("Auswahl: ");
-
-                string? inputTextcheck = Console.ReadLine();
-                if (!int.TryParse(inputTextcheck, out int choiceText))
-                {
-                    Console.WriteLine("Bitte eine Menünummer eingeben. Enter...");
-                    Console.ReadLine();
-                    continue;
-                }
-                if (choiceText < 0 || choiceText > 3)
-                {
-                    Console.WriteLine("Ungültige Auswahl. Enter...");
-                    Console.ReadLine();
-                    continue;
-                }
-                if (choiceText == 0) continue;
-
-                bool useLeetToPlain = isLeet;
-                if (choiceText == 2)
-                {
-                    useLeetToPlain = !isLeet;
-                }
-                Console.Clear();
-                //Übersetzen
-                string result;
-                if (useLeetToPlain)
-                {
-                    result = Translate(normalizedInput, _leetToPlain);
-                }
-                else
-                {
-                    result = Translate(normalizedInput, _plainToLeet);
-                }
-                Console.WriteLine(result);
-                Console.ReadLine();
-
-                
+                string? textInput = ReadTextFromConsole();
+                if (textInput == null) continue;
+                ProcessText(textInput);              
             }
             else if (choice == 2)
             {
-                Console.WriteLine("WiP");
-                Console.WriteLine("Funktion wird später hinzugefügt.");
-                Console.WriteLine("Enter...");
-                Console.ReadLine();
+                string? textInput = ReadTextFromFile();
+                if (textInput == null) continue;
+                ProcessText(textInput);
             }
-
         }
     }
 }
