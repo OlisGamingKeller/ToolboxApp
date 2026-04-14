@@ -221,12 +221,14 @@ public class LeetTool : ITool
                 continue;
             }
             if (choice == 0) return;
+            // Menüpunkt 1 - Texteingabe einlesen, normalisieren, erkennen und übersetzen
             if (choice == 1)
             {
                 string? textInput = ReadTextFromConsole();
                 if (textInput == null) continue;
                 ProcessText(textInput);              
             }
+            // Menüpunkt 2 - Datei einlesen, Text validieren, normalisieren, erkennen und übersetzen
             else if (choice == 2)
             {
                 string? textInput = ReadTextFromFile();
