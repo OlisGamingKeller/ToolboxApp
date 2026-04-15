@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace ToolboxApp.Leet;
 
 /* Idee:
@@ -13,67 +10,14 @@ public class LeetTool : ITool
 {
     public string Name => "LEET-Speech-Übersetzer (WiP)";
 
-    private readonly Dictionary<char,char> _plainToLeet;
-    private readonly Dictionary<char,char> _leetToPlain;
+    private readonly LeetTranslator _translator;
+    private readonly LeetFileService _fileService;
 
     // Konstruktor
     public LeetTool()
     {
-        _plainToLeet = new Dictionary<char,char>
-        {
-            {'A','4'},
-            {'E','3'},
-            {'I','1'},
-            {'O','0'},
-            {'S','5'},
-            {'T','7'}
-        };
-        _leetToPlain = new Dictionary<char, char>
-        {
-            { '4', 'A' },
-            { '3', 'E' },
-            { '1', 'I' },
-            { '0', 'O' },
-            { '5', 'S' },
-            { '7', 'T' }
-        };
-    }
-
-    // Normalisieren
-    private string NormalizeInput(string input)
-    {
-        return input.ToUpper();
-    }
-
-    // Erkennen
-    private bool IsLikelyLeet(string input)
-    {
-        foreach (char c in input)
-        {
-            if (_leetToPlain.ContainsKey(c))         //ContainsKey(c) prüft ob Zeichen in Dictionary
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Übersetzen
-    private string Translate(string input, Dictionary<char, char> dictionary)
-    {
-        StringBuilder builder = new StringBuilder();
-        foreach (char c in input)
-        {
-            if (dictionary.TryGetValue(c, out char translatedChar))      //Prüft, ob Zeichen als Leet-Key vorkommt
-            {
-                builder.Append(translatedChar);                         //Übersetzten Wert anhängen
-            }
-            else
-            {
-                builder.Append(c);                                      //Originalzeichen anhängen
-            }
-        }
-        return builder.ToString();
+        _translator = new LeetTranslator();
+        _fileService = new LeetFileService();
     }
 
     // Einlesen aus Konsoleneingabe
@@ -95,39 +39,26 @@ public class LeetTool : ITool
     private string? ReadTextFromFile()
     {
         Console.Clear();
-        Console.WriteLine("Geben Sie den Dateipfad ein:");                                      //Dateipfad eingeben
+        Console.WriteLine("Geben Sie den Dateipfad ein:");
         string? pathInput = Console.ReadLine();
+
         if (string.IsNullOrWhiteSpace(pathInput))
         {
-            Console.WriteLine("Bitte einen gültigen Pfad eingeben. Enter...");
+            Console.WriteLine("Bitte einen gueltigen Pfad eingeben. Enter...");
             Console.ReadLine();
             return null;
         }
-        if (!File.Exists(pathInput))                                                            //Existiert die Datei
+
+        string? textInput = _fileService.ReadTextFromFile(pathInput);
+
+        if (textInput == null)
         {
-            Console.WriteLine("Die Datei existiert nicht oder der Pfad ist falsch. Enter...");
+            Console.WriteLine("Datei konnte nicht gelesen werden oder enthaelt keinen verwertbaren Text. Enter...");
             Console.ReadLine();
             return null;
         }
-        // Kein Text in Datei & kann Datei überhaupt gelesen werden
-        try
-        {
-            string? textInput = File.ReadAllText(pathInput);
-            if (string.IsNullOrWhiteSpace(textInput))
-            {
-                Console.WriteLine("Die Datei enthält keinen verwertbaren Text. Enter...");
-                Console.ReadLine();
-                return null;
-            }
-            return textInput;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Datei konnte nicht gelesen werden. Enter...");
-            Console.WriteLine(ex.Message);
-            Console.ReadLine();
-            return null;
-        }
+
+        return textInput;
     }
 
     // Text verarbeiten
@@ -136,9 +67,10 @@ public class LeetTool : ITool
         Console.Clear();
 
         //Normalisieren
-        string normalizedInput = NormalizeInput(textInput);
+        string normalizedInput = _translator.NormalizeInput(textInput);
+
         //Erkennen
-        bool isLeet = IsLikelyLeet(normalizedInput);
+        bool isLeet = _translator.IsLikelyLeet(normalizedInput);
         if (isLeet)
         {
             Console.WriteLine("Der Text wurde als Leet-Text erkannt");
@@ -147,6 +79,7 @@ public class LeetTool : ITool
         {
             Console.WriteLine("Der Text wurde als Plain-Text erkannt");
         }
+
         //User-Abfrage zur Absischerung & Dictionary festlegen
         Console.WriteLine("Ist das korrekt?");
         Console.WriteLine("1) Ja, stimmt. Bitte übersetzen.");
@@ -176,16 +109,10 @@ public class LeetTool : ITool
             useLeetToPlain = !isLeet;
         }
         Console.Clear();
+
         //Übersetzen
-        string result;
-        if (useLeetToPlain)
-        {
-            result = Translate(normalizedInput, _leetToPlain);
-        }
-        else
-        {
-            result = Translate(normalizedInput, _plainToLeet);
-        }
+        string result = _translator.Translate(normalizedInput, useLeetToPlain);
+
         Console.WriteLine($"Eingabe erkannt als: {(isLeet ? "Leet-Text" : "Plain-Text")}");
         Console.WriteLine($"Übersetzungsrichtung: {(useLeetToPlain ? "Leet -> Plain" : "Plain -> Leet")}");
         Console.WriteLine($"Ergebnis: \n{result}");
