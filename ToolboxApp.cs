@@ -31,23 +31,22 @@ public class ToolboxApplication
 
             if (!int.TryParse(input, out int choice))
             {
-                Console.WriteLine("Bitte eine Menünummer eingeben. Enter...");
+                Console.WriteLine("Bitte eine Menunummer eingeben. Enter...");
                 Console.ReadLine();
                 continue;
             }
 
             if (choice == 0)
-                {
+            {
                 Console.Clear();
                 return;
-                }
-                
+            }
 
             int index = choice - 1;
 
             if (index < 0 || index >= _tools.Count)
             {
-                Console.WriteLine("Ungültige Auswahl. Enter...");
+                Console.WriteLine("Ungueltige Auswahl. Enter...");
                 Console.ReadLine();
                 continue;
             }

@@ -9,7 +9,7 @@ namespace ToolboxApp.Hello;
     public void Run()
     {
         Console.WriteLine("Hallo aus dem Tool!");
-        Console.WriteLine("Enter zum Zurücksetzen...");
+        Console.WriteLine("Zurueck. Enter...");
         Console.ReadLine();
     }
 }

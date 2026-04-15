@@ -10,6 +10,7 @@ public class GameTool : ITool
     {
         Console.WriteLine("Achtung Baustelle");
         Console.WriteLine("Hier entsteht ein Text-Adventure");
+        Console.WriteLine("Zurueck. Enter...");
         Console.ReadLine();
     }
 }

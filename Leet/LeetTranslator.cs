@@ -41,7 +41,7 @@ public class LeetTranslator
     {
         foreach (char c in input)
         {
-            if (_leetToPlain.ContainsKey(c))            //.ContainsKey(c) prüft Zeichen auf Übereinstimmung im Dictionary
+            if (_leetToPlain.ContainsKey(c))            // Prueft, ob das Zeichen als Leet-Zeichen im Dictionary vorkommt
             {
                 return true;
             }
@@ -50,7 +50,7 @@ public class LeetTranslator
         return false;
     }
 
-    // Übersetzen
+    // Uebersetzen
     public string Translate(string input, bool useLeetToPlain)
     {
         Dictionary<char, char> dictionary;
@@ -68,7 +68,7 @@ public class LeetTranslator
 
         foreach (char c in input)
         {
-            if (dictionary.TryGetValue(c, out char translatedChar))         // Prüft Zeichen auf Überinstimmung und tauscht gegebenenfalls aus
+            if (dictionary.TryGetValue(c, out char translatedChar))         // Sucht das Zeichen im Dictionary und ersetzt es bei Treffer
             {
                 builder.Append(translatedChar);
             }
