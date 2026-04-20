@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ToolboxApp;
@@ -20,7 +20,7 @@ var tools = new List<ITool>
     new PasswordGeneratorTool(),
     new PasswordManagerTool(),
     new GameTool(),
-    // später: new CalculatorTool(), new LeetTranslatorTool(), ...
+    // spaeter: new CalculatorTool(), new LeetTranslatorTool(), ...
 };
 
 var app = new ToolboxApplication(tools);

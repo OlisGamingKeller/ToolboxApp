@@ -10,6 +10,7 @@ public class PasswordGeneratorTool : ITool
     {
         Console.WriteLine("Achtung Baustelle");
         Console.WriteLine("Hier entsteht ein Passwortgenerator");
+        Console.WriteLine("Zurueck. Enter...");
         Console.ReadLine();
     }
 }

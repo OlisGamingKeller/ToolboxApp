@@ -48,15 +48,19 @@ The LEET tool is currently work in progress.
 At the moment it can:
 
 - read text from console input
+- read text from supported files (`.txt`, `.md`)
 - normalize input to uppercase
 - try to detect whether the text looks like plain text or LEET
 - translate in both directions
 - ask the user to confirm or invert the detected direction
+- save translated output to a supported file
+- show a small info/rules page loaded from a markdown file
 
-Planned next steps mentioned in the code:
+The current implementation is also split into smaller responsibilities:
 
-- reading text from files
-- saving translated output to a text file
+- `LeetTool` handles menu flow and console interaction
+- `LeetTranslator` contains the translation and detection logic
+- `LeetFileService` handles file input/output and file type checks
 
 ### Other Tools
 
@@ -75,6 +79,7 @@ The application uses a simple modular structure:
 - `ToolboxApp.cs` contains the main menu and tool selection logic
 - `ITool.cs` defines the shared interface for all tools
 - each tool lives in its own folder
+- helper classes can live alongside a tool when logic grows beyond a single file
 
 All tools implement the same interface:
 
@@ -103,6 +108,13 @@ You can start the application with:
 dotnet run
 ```
 
+## Line Endings
+
+The repository uses a `.gitattributes` file to keep line endings consistent across files and platforms.
+
+- C# / .NET project files use `CRLF`
+- Markdown and plain text files use `LF`
+
 ## Why This Project Exists
 
 This project is mainly a learning playground where I can practice:
@@ -117,4 +129,4 @@ This project is mainly a learning playground where I can practice:
 
 - The project is still in active development.
 - Some tool names and console output are currently in German.
-- More cleanup and consistency improvements will happen over time.
+- The codebase is being refactored gradually while new features are added.
