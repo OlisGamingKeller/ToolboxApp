@@ -39,11 +39,63 @@ public class LeetTranslator
     // Erkennen
     public bool IsLikelyLeet(string input)
     {
+        int spaceCount = 0;
+        int relevantCount = 0;
+        int leetCount = 0;
+        
         foreach (char c in input)
         {
-            if (_leetToPlain.ContainsKey(c))            // Prueft, ob das Zeichen als Leet-Zeichen im Dictionary vorkommt
+            if (c == ' ')
             {
-                return true;
+                spaceCount++;
+            }
+        }
+
+        if (spaceCount >= 2)
+        {
+            foreach (char c in input)
+            {
+                if (char.IsLetterOrDigit(c))
+                {
+                    relevantCount++;
+                    if (_leetToPlain.ContainsKey(c))
+                    {
+                        leetCount++;
+                    }
+                }
+            }
+            if (relevantCount == 0)
+            {
+                return false;
+            }
+            double ratio = (double)leetCount / relevantCount;
+            return ratio >= 0.25;
+            
+        }
+
+        else
+        {
+            if (input.Length >= 5)
+            {
+                foreach (char c in input)
+                {
+                    if (_leetToPlain.ContainsKey(c))
+                    {
+                        leetCount++;
+                    }
+                }
+                if (leetCount >=2)
+                {
+                    double ratio = (double)leetCount / input.Length;
+                    return ratio >= 0.25;
+                }
+            }
+            foreach (char c in input)
+            {
+                if (_leetToPlain.ContainsKey(c))
+                {
+                    return true;
+                }    
             }
         }
 

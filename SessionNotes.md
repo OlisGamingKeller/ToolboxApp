@@ -1,11 +1,13 @@
 # Session Notes
 
-## Stand dieser Session
+## Aktueller Stand
 
-- `LeetTool` ist jetzt funktional nutzbar.
+- `LeetTool` ist funktional nutzbar.
 - `CalculatorTool` funktioniert weiterhin und wurde textlich vereinheitlicht.
 - Die Projekttexte wurden auf einen einheitlichen ASCII-Stil umgestellt (`ue`, `ae`, `oe` statt Umlaute).
 - Eine `.gitattributes` wurde hinzugefuegt, damit Zeilenenden im Repo kuenftig konsistenter behandelt werden.
+- `README.md` ist auf dem aktuellen Stand.
+- Die Leet-Erkennung wurde begonnen zu verfeinern, ist aber noch nicht fertig und soll weiter ueberarbeitet werden.
 
 ## Heute erledigt
 
@@ -19,6 +21,10 @@
 - `ShowInfo()` liest den Text jetzt ueber `LeetFileService`
 - Dateityp-Pruefung fuer `.txt` und `.md` eingebaut
 - einfache Speicherpruefung ergaenzt
+- erste verfeinerte Erkennungslogik in `LeetTranslator.IsLikelyLeet(...)` begonnen
+- aktuell werden Leerzeichen, relevante Zeichen und Leet-Zeichen gezaehlt
+- fuer Texte mit mindestens 2 Leerzeichen wird derzeit mit einer Verhaeltnisregel gearbeitet
+- fuer kurze Texte gibt es aktuell noch eine vereinfachte Sonderbehandlung
 
 ### CalculatorTool
 
@@ -39,22 +45,27 @@
 - `Calculator/CalculatorTool.cs`
 - `README.md`
 - `LearningFazit.md`
+- `SessionNotes.md`
 - `.gitattributes`
 
 ## Offene Beobachtungen
 
-- Die Leet-Erkennung ist noch sehr vereinfacht.
-- Aktuell reicht schon das Vorkommen einzelner Leet-Zeichen, damit ein Text schnell als Leet eingestuft wird.
-- Dadurch ist die Nutzerabfrage im Moment noch wichtiger als die automatische Erkennung selbst.
+- Die Leet-Erkennung wurde verbessert, ist aber noch nicht stabil genug.
+- Die aktuelle Zwischenloesung in `IsLikelyLeet(...)` funktioniert teilweise, fuehlt sich aber noch zu komplex und nicht ganz rund an.
+- Fuer kurze Texte und einzelne Woerter ist die Erkennung besonders unsicher.
+- Die Nutzerabfrage bleibt deshalb weiterhin sehr wichtig.
+- Unter den aktuellen vereinfachten Leet-Regeln wird nicht mit Mischformen gearbeitet.
 
 ## Naechster sinnvoller Schritt
 
-Die Erkennungslogik im `LeetTranslator` verbessern.
+Die Erkennungslogik im `LeetTranslator` gezielt weiter vereinfachen und gleichzeitig robuster machen.
 
-Idee:
+Ideen:
 
-- nicht nur pruefen, ob ueberhaupt ein Leet-Zeichen vorkommt
-- sondern staerker gewichten, wie viele Leet-Zeichen im Verhaeltnis zum restlichen Text vorkommen
+- die aktuelle Zwischenlogik in `IsLikelyLeet(...)` nochmal ueberdenken
+- pruefen, ob zuerst staerker auf Plain-Hinweise geachtet werden soll
+- danach Leet-Hinweise mit einer einfachen Zusatzregel absichern
+- lange Texte und kurze Texte weiterhin getrennt betrachten
 - danach die Info-Datei anpassen
 - anschliessend mit mehreren Beispieltexten testen
 
@@ -64,6 +75,7 @@ Idee:
 - echter Leet-Text
 - gemischter Text
 - laengerer Klartext mit Jahreszahl oder Hausnummer
+- kurze Eingaben wie `4RG`, `H4LL0`, `1`, `TEST 25`
 
 ## Hinweis fuer Rechnerwechsel
 
