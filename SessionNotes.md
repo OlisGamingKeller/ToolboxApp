@@ -7,7 +7,8 @@
 - Die Projekttexte wurden auf einen einheitlichen ASCII-Stil umgestellt (`ue`, `ae`, `oe` statt Umlaute).
 - Eine `.gitattributes` wurde hinzugefuegt, damit Zeilenenden im Repo kuenftig konsistenter behandelt werden.
 - `README.md` ist auf dem aktuellen Stand.
-- Die Leet-Erkennung wurde begonnen zu verfeinern, ist aber noch nicht fertig und soll weiter ueberarbeitet werden.
+- Die Leet-Erkennung wurde bereits verfeinert und durch eine Hilfsmethode aufgeraeumt.
+- Die Uebersetzungslogik soll als naechstes um Zahlenkontext erweitert werden.
 
 ## Heute erledigt
 
@@ -21,10 +22,17 @@
 - `ShowInfo()` liest den Text jetzt ueber `LeetFileService`
 - Dateityp-Pruefung fuer `.txt` und `.md` eingebaut
 - einfache Speicherpruefung ergaenzt
-- erste verfeinerte Erkennungslogik in `LeetTranslator.IsLikelyLeet(...)` begonnen
-- aktuell werden Leerzeichen, relevante Zeichen und Leet-Zeichen gezaehlt
-- fuer Texte mit mindestens 2 Leerzeichen wird derzeit mit einer Verhaeltnisregel gearbeitet
-- fuer kurze Texte gibt es aktuell noch eine vereinfachte Sonderbehandlung
+
+### LeetTranslator
+
+- Hilfsmethode `CountTextCharacteristics(...)` eingebaut
+- dort werden jetzt `spaceCount`, `relevantCount`, `leetCount` und `plainCount` in einem Durchlauf gezaehlt
+- `IsLikelyLeet(...)` wurde dadurch deutlich vereinfacht
+- `plainCount` wird jetzt als Gegengewicht zu `leetCount` genutzt
+- fuer laengere Texte wird aktuell mit einer Verhaeltnisregel gearbeitet
+- fuer kuerzere Texte gibt es derzeit noch eine einfachere Sonderregel
+- `Translate(...)` wurde von `foreach` auf `for` umgestellt, damit spaeter Nachbarzeichen und Ziffernfolgen geprueft werden koennen
+- erster TODO-Kommentar fuer die Zahlenkontext-Regel ist eingebaut
 
 ### CalculatorTool
 
@@ -50,32 +58,36 @@
 
 ## Offene Beobachtungen
 
-- Die Leet-Erkennung wurde verbessert, ist aber noch nicht stabil genug.
-- Die aktuelle Zwischenloesung in `IsLikelyLeet(...)` funktioniert teilweise, fuehlt sich aber noch zu komplex und nicht ganz rund an.
-- Fuer kurze Texte und einzelne Woerter ist die Erkennung besonders unsicher.
-- Die Nutzerabfrage bleibt deshalb weiterhin sehr wichtig.
-- Unter den aktuellen vereinfachten Leet-Regeln wird nicht mit Mischformen gearbeitet.
+- Die Leet-Erkennung ist jetzt klarer strukturiert, aber die Regeln koennen spaeter noch weiter verfeinert werden.
+- Unter dem aktuellen vereinfachten Regelwerk wird nicht mit echten Mischformen gearbeitet.
+- Die Nutzerabfrage bleibt wichtig, falls die Heuristik nicht eindeutig ist.
+- Das groesste offene fachliche Problem ist derzeit die Uebersetzung von Zahlenkontexten.
+- Beispiele wie `25`, `2025` oder `115:110` sollen im Plaintext nicht kaputt uebersetzt werden.
+- Gleichzeitig sollen moegliche Leet-Woerter wie `7357` nicht pauschal als Zahl blockiert werden.
 
 ## Naechster sinnvoller Schritt
 
-Die Erkennungslogik im `LeetTranslator` gezielt weiter vereinfachen und gleichzeitig robuster machen.
+Die Uebersetzungslogik in `Translate(...)` um eine Zahlenkontext-Regel erweitern.
 
 Ideen:
 
-- die aktuelle Zwischenlogik in `IsLikelyLeet(...)` nochmal ueberdenken
-- pruefen, ob zuerst staerker auf Plain-Hinweise geachtet werden soll
-- danach Leet-Hinweise mit einer einfachen Zusatzregel absichern
-- lange Texte und kurze Texte weiterhin getrennt betrachten
-- danach die Info-Datei anpassen
-- anschliessend mit mehreren Beispieltexten testen
+- nur im Fall `useLeetToPlain` pruefen
+- bei Ziffern Nachbarzeichen ueber den Schleifenindex betrachten
+- zusammenhaengende Ziffernfolgen bestimmen
+- danach im Kontext entscheiden, ob es sich eher um eine echte Zahl/Bezeichnung oder um ein moegliches Leet-Wort handelt
+- dabei den bereits eingebauten TODO-Kommentar als Einstiegspunkt nutzen
 
 ## Testideen fuer naechstes Mal
 
-- normaler Satz mit einer Zahl
-- echter Leet-Text
-- gemischter Text
-- laengerer Klartext mit Jahreszahl oder Hausnummer
-- kurze Eingaben wie `4RG`, `H4LL0`, `1`, `TEST 25`
+- `TEST 25`
+- `Das ist 2025 ein Test`
+- `115:110`
+- `2/4 FG, 1/2 FT`
+- `A380`
+- `7357`
+- `1CH H4B3 3 BR073`
+- `H4LL0`
+- `4RG`
 
 ## Hinweis fuer Rechnerwechsel
 
@@ -83,4 +95,4 @@ Wenn der IDE-Chatverlauf auf einem anderen Geraet fehlt:
 
 - Repo pullen
 - `SessionNotes.md` lesen
-- danach direkt bei der Leet-Erkennung weitermachen
+- danach direkt beim TODO in `LeetTranslator.Translate(...)` weitermachen

@@ -36,38 +36,54 @@ public class LeetTranslator
         return input.ToUpper();
     }
 
-    // Erkennen
-    public bool IsLikelyLeet(string input)
+    // Zeichen zählen
+    private (int spaceCount, int relevantCount, int leetCount, int plainCount) CountTextCharacteristics(string input)
     {
         int spaceCount = 0;
         int relevantCount = 0;
         int leetCount = 0;
-        
+        int plainCount = 0;
+
         foreach (char c in input)
         {
             if (c == ' ')
             {
                 spaceCount++;
             }
+            if (char.IsLetterOrDigit(c))
+            {
+                relevantCount++;
+                if (_leetToPlain.ContainsKey(c))
+                {
+                    leetCount++;
+                }
+                if (_plainToLeet.ContainsKey(c))
+                {
+                    plainCount++;
+                }
+            }
+        }
+
+        return (spaceCount, relevantCount, leetCount, plainCount);
+    }
+
+    // Erkennen
+    public bool IsLikelyLeet(string input)
+    {
+        var (spaceCount, relevantCount, leetCount, plainCount) = CountTextCharacteristics(input);
+        
+        if (relevantCount == 0)
+        {
+            return false;
+        }
+
+        if (plainCount > leetCount)
+        {
+            return false;
         }
 
         if (spaceCount >= 2)
         {
-            foreach (char c in input)
-            {
-                if (char.IsLetterOrDigit(c))
-                {
-                    relevantCount++;
-                    if (_leetToPlain.ContainsKey(c))
-                    {
-                        leetCount++;
-                    }
-                }
-            }
-            if (relevantCount == 0)
-            {
-                return false;
-            }
             double ratio = (double)leetCount / relevantCount;
             return ratio >= 0.25;
             
@@ -77,25 +93,11 @@ public class LeetTranslator
         {
             if (input.Length >= 5)
             {
-                foreach (char c in input)
-                {
-                    if (_leetToPlain.ContainsKey(c))
-                    {
-                        leetCount++;
-                    }
-                }
                 if (leetCount >=2)
                 {
-                    double ratio = (double)leetCount / input.Length;
+                    double ratio = (double)leetCount / relevantCount;
                     return ratio >= 0.25;
                 }
-            }
-            foreach (char c in input)
-            {
-                if (_leetToPlain.ContainsKey(c))
-                {
-                    return true;
-                }    
             }
         }
 
@@ -103,7 +105,7 @@ public class LeetTranslator
     }
 
     // Uebersetzen
-    public string Translate(string input, bool useLeetToPlain)
+    public string Translate(string input, bool useLeetToPlain)              //useLeetToPlain wird in LeetTool von IsLikelyLeet übergegeben
     {
         Dictionary<char, char> dictionary;
 
@@ -118,8 +120,21 @@ public class LeetTranslator
 
         StringBuilder builder = new StringBuilder();
 
-        foreach (char c in input)
+        for (int i = 0; i < input.Length; i++)
         {
+            char c = input[i];
+            if (useLeetToPlain)
+            {
+                if (char.IsDigit(c))
+                {
+                    if (i < input.Length - 1 && char.IsDigit(input[i+1]))
+                    {
+                        // TODO: Ganze Ziffernfolge bestimmen und im Kontext entscheiden, ob Zahl oder Leet
+
+                    }
+                }
+            }
+
             if (dictionary.TryGetValue(c, out char translatedChar))         // Sucht das Zeichen im Dictionary und ersetzt es bei Treffer
             {
                 builder.Append(translatedChar);

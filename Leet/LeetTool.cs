@@ -121,11 +121,11 @@ public class LeetTool : ITool
         bool isLeet = _translator.IsLikelyLeet(normalizedInput);
         if (isLeet)
         {
-            Console.WriteLine("Der Text wurde als Leet-Text erkannt.");
+            Console.WriteLine("Ihre Eingabe ist wahrscheinlich ein Leet-Text.");
         }
         else
         {
-            Console.WriteLine("Der Text wurde als Plain-Text erkannt.");
+            Console.WriteLine("Ihre Eingabe ist wahrscheinlich ein Plain-Text.");
         }
 
         // User-Abfrage zur Absicherung und Uebersetzungsrichtung festlegen
